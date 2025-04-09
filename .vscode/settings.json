@@ -7,5 +7,10 @@
   },
   "python.defaultInterpreterPath": "${workspaceFolder}/venv",
   "python.testing.pytestEnabled": true,
-  "python.terminal.activateEnvironment": true
+  "python.terminal.activateEnvironment": true,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#0A2C5C",
+    "titleBar.activeBackground": "#0E3E81",
+    "titleBar.activeForeground": "#F7FAFE"
+  }
 }

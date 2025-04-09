@@ -1,0 +1,57 @@
+name: PyPI Publish
+
+on: [push]
+
+jobs:
+  build-sdist:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: build-sdist
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install poetry
+      run: pipx install poetry
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+        cache: 'poetry'
+
+    - name: build release distributions
+      run: |-
+        poetry install
+        poetry build --format=wheel
+        poetry build --format=sdist
+
+    - name: upload dists
+      uses: actions/upload-artifact@v4
+      with:
+        name: cibw-sdist
+        path: dist/
+
+  pypi-publish:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: pypi-publish
+      cancel-in-progress: false
+
+    needs:
+    - build-sdist
+
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Retrieve release distributions
+      uses: actions/download-artifact@v4
+      with:
+        pattern: cibw-*
+        path: dist
+        merge-multiple: true
+
+    - name: Publish release distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.12.4
