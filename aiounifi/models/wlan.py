@@ -2,7 +2,10 @@
 
 from dataclasses import dataclass
 import io
-from typing import NotRequired, Self, TypedDict
+try:
+    from typing import Self, NotRequired, TypedDict
+except ImportError:
+    from typing_extensions import Self, NotRequired, TypedDict
 
 import segno.helpers
 

@@ -2,7 +2,11 @@
 
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import NotRequired, Self, TypedDict
+
+try:
+    from typing import Self, NotRequired, TypedDict
+except ImportError:
+    from typing_extensions import Self, NotRequired, TypedDict
 
 from .api import ApiItem, ApiRequestV2
 

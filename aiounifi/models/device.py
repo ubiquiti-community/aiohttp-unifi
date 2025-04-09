@@ -7,7 +7,10 @@ from dataclasses import dataclass
 import enum
 import logging
 import re
-from typing import Any, NotRequired, Self, TypedDict, cast
+try:
+    from typing import Any, NotRequired, Self, TypedDict, cast
+except ImportError:
+    from typing_extensions import Any, NotRequired, Self, TypedDict, cast
 
 from .api import ApiItem, ApiRequest
 

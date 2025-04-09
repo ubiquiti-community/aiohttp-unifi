@@ -1,7 +1,10 @@
 """Clients are devices on a UniFi network."""
 
 from dataclasses import dataclass
-from typing import Self, TypedDict, cast
+try:
+    from typing import Self, TypedDict, cast
+except ImportError:
+    from typing_extensions import Self, TypedDict, cast
 
 from .api import ApiItem, ApiRequest
 
