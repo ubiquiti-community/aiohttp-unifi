@@ -15,6 +15,7 @@ from .interfaces.events import EventHandler
 from .interfaces.firewall_policies import FirewallPolicies
 from .interfaces.firewall_zones import FirewallZones
 from .interfaces.messages import MessageHandler
+from .interfaces.networks import Networks
 from .interfaces.outlets import Outlets
 from .interfaces.port_forwarding import PortForwarding
 from .interfaces.ports import Ports
@@ -50,6 +51,7 @@ class Controller:
         self.firewall_zones = FirewallZones(self)
         self.firewall_policies = FirewallPolicies(self)
         self.outlets = Outlets(self)
+        self.networks = Networks(self)
         self.port_forwarding = PortForwarding(self)
         self.ports = Ports(self)
         self.sites = Sites(self)
