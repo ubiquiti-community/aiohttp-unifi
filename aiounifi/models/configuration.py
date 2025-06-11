@@ -14,6 +14,7 @@ class Configuration:
     session: ClientSession
     host: str
     _: KW_ONLY
+    apikey: str
     username: str
     password: str
     port: int = 8443

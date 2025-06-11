@@ -50,6 +50,9 @@ class Connectivity:
 
         if config.ssl_context:
             LOGGER.warning("Using SSL context %s", config.ssl_context)
+            
+        if config.apikey:
+            self.headers["X-API-KEY"] = config.apikey
 
     async def check_unifi_os(self) -> None:
         """Check if controller is running UniFi OS."""
@@ -62,6 +65,11 @@ class Connectivity:
 
     async def login(self) -> None:
         """Log in to controller."""
+        
+        if self.config.apikey:
+            LOGGER.debug("Using API key for authentication")
+            return
+        
         self.headers.clear()
         url = f"{self.config.url}/api{'/auth/login' if self.is_unifi_os else '/login'}"
 
