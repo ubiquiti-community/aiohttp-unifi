@@ -1,17 +1,17 @@
 [build-system]
-requires      = [ "setuptools==78.1.0", "wheel==0.46.1" ]
+requires = ["setuptools==78.1.0", "wheel==0.46.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "aiohttp-unifi"
-version = "86"
+version = "87"
 license = { text = "MIT" }
 description = "Python library for communicating with UniFi Network Controller API"
 readme = "README.md"
 authors = [
     { name = "Robert Svensson", email = "Kane610@users.noreply.github.com" },
 ]
-keywords = [ "unifi", "homeassistant" ]
+keywords = ["unifi", "homeassistant"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -21,10 +21,10 @@ classifiers = [
     "Topic :: Home Automation",
 ]
 requires-python = ">=3.12.0,<4.0"
-dependencies = [ "aiohttp>3.9", "orjson>3.9", "segno>=1.5.2" ]
+dependencies = ["aiohttp>3.9", "orjson>3.9", "segno>=1.5.2"]
 
 [project.optional-dependencies]
-requirements = [ "aiohttp==3.11.16", "orjson==3.10.16", "segno==1.6.6" ]
+requirements = ["aiohttp==3.11.16", "orjson==3.10.16", "segno==1.6.6"]
 requirements-test = [
     "aioresponses==0.7.8",
     "mypy==1.15.0",
@@ -36,57 +36,57 @@ requirements-test = [
     "trustme==1.2.1",
     "types-orjson==3.6.2",
 ]
-requirements-dev = [ "pre-commit==4.2.0" ]
+requirements-dev = ["pre-commit==4.2.0"]
 
 [project.urls]
 "Source Code" = "https://github.com/ubiquiti-community/aiohttp-unifi"
 "Bug Reports" = "https://github.com/ubiquiti-community/aiohttp-unifi/issues"
-"Forum"       = "https://community.home-assistant.io/t/unifi-network-integration-official-thread/"
+"Forum" = "https://community.home-assistant.io/t/unifi-network-integration-official-thread/"
 
 [project.scripts]
 aiounifi = "aiounifi.__main__:main"
 
 [tool.poetry]
-packages     = [ { include = "aiounifi" } ]
+packages = [{ include = "aiounifi" }]
 dependencies = { python = ">=3.12.0,<4.0" }
 
 [tool.coverage.report]
-fail_under   = 95
-exclude_also = [ "if TYPE_CHECKING:" ]
+fail_under = 95
+exclude_also = ["if TYPE_CHECKING:"]
 
 [tool.setuptools.packages.find]
-include = [ "aiounifi*" ]
+include = ["aiounifi*"]
 
 [tool.setuptools.package-data]
-"aiounifi" = [ "py.typed" ]
+"aiounifi" = ["py.typed"]
 
 [tool.mypy]
-python_version              = "3.10"
-check_untyped_defs          = true
-disallow_any_generics       = true
-disallow_incomplete_defs    = true
-disallow_subclassing_any    = true
-disallow_untyped_calls      = true
+python_version = "3.10"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
 disallow_untyped_decorators = true
-disallow_untyped_defs       = true
-no_implicit_optional        = true
-no_implicit_reexport        = true
-strict_equality             = true
-warn_redundant_casts        = true
-warn_return_any             = true
-warn_unreachable            = true
-warn_unused_configs         = true
-warn_unused_ignores         = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
 
 [tool.pytest.ini_options]
-addopts       = "--cov=aiounifi --cov-report term-missing"
-asyncio_mode  = "auto"
-log_cli       = false
+addopts = "--cov=aiounifi --cov-report term-missing"
+asyncio_mode = "auto"
+log_cli = false
 log_cli_level = "DEBUG"
-testpaths     = [ "tests" ]
+testpaths = ["tests"]
 
 [tool.ruff]
-src            = [ "aiounifi", "tests" ]
+src = ["aiounifi", "tests"]
 target-version = "py312"
 
 lint.select = [
@@ -147,8 +147,8 @@ fixture-parentheses = false
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
-known-first-party          = [ "aiounifi" ]
-combine-as-imports         = true
+known-first-party = ["aiounifi"]
+combine-as-imports = true
 
 [tool.ruff.lint.mccabe]
 max-complexity = 12
