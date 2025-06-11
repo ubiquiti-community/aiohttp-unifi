@@ -134,12 +134,84 @@ class TypedDeviceOutletTable(TypedDict):
     relay_state: bool
 
 
+class TypedDeviceQOSMarking(TypedDict, total=False):
+    """Device QOS marking type definition."""
+    
+    cos_code: NotRequired[int]
+    dscp_code: NotRequired[int]
+    ip_precedence_code: NotRequired[int]
+    queue: NotRequired[int]
+
+
+class TypedDeviceQOSMatching(TypedDict, total=False):
+    """Device QOS matching type definition."""
+    # Add QOS matching fields as needed
+
+
+class TypedDeviceQOSPolicies(TypedDict, total=False):
+    """Device QOS policies type definition."""
+    
+    qos_marking: NotRequired[TypedDeviceQOSMarking]
+    qos_matching: NotRequired[TypedDeviceQOSMatching]
+
+
+class TypedDeviceQOSProfile(TypedDict, total=False):
+    """Device QOS profile type definition."""
+    
+    qos_policies: NotRequired[list[TypedDeviceQOSPolicies]]
+    qos_profile_mode: NotRequired[str]
+
+
 class TypedDevicePortOverrides(TypedDict, total=False):
     """Device port overrides type definition."""
 
+    # Required fields
     poe_mode: str
     port_idx: int
     portconf_id: str
+    
+    # Optional fields
+    aggregate_num_ports: NotRequired[int]
+    autoneg: NotRequired[bool]
+    dot1x_ctrl: NotRequired[str]
+    dot1x_idle_timeout: NotRequired[int]
+    egress_rate_limit_kbps_enabled: NotRequired[bool]
+    egress_rate_limit_kbps: NotRequired[int]
+    excluded_networkconf_ids: NotRequired[list[str]]
+    fec_mode: NotRequired[str]
+    forward: NotRequired[str]
+    full_duplex: NotRequired[bool]
+    isolation: NotRequired[bool]
+    lldpmed_enabled: NotRequired[bool]
+    lldpmed_notify_enabled: NotRequired[bool]
+    mirror_port_idx: NotRequired[int]
+    name: NotRequired[str]
+    native_networkconf_id: NotRequired[str]
+    op_mode: NotRequired[str]
+    port_keepalive_enabled: NotRequired[bool]
+    port_poe: NotRequired[bool]
+    port_security_enabled: NotRequired[bool]
+    port_security_mac_address: NotRequired[list[str]]
+    priority_queue1_level: NotRequired[int]
+    priority_queue2_level: NotRequired[int]
+    priority_queue3_level: NotRequired[int]
+    priority_queue4_level: NotRequired[int]
+    qos_profile: NotRequired[TypedDeviceQOSProfile]
+    setting_preference: NotRequired[str]
+    speed: NotRequired[int]
+    stormctrl_bcast_enabled: NotRequired[bool]
+    stormctrl_bcast_level: NotRequired[int]
+    stormctrl_bcast_rate: NotRequired[int]
+    stormctrl_mcast_enabled: NotRequired[bool]
+    stormctrl_mcast_level: NotRequired[int]
+    stormctrl_mcast_rate: NotRequired[int]
+    stormctrl_type: NotRequired[str]
+    stormctrl_ucast_enabled: NotRequired[bool]
+    stormctrl_ucast_level: NotRequired[int]
+    stormctrl_ucast_rate: NotRequired[int]
+    stp_port_mode: NotRequired[bool]
+    tagged_vlan_mgmt: NotRequired[str]
+    voice_networkconf_id: NotRequired[str]
 
 
 class TypedDevicePortTableLldpTable(TypedDict):
@@ -722,6 +794,38 @@ class DeviceSetOutletCycleEnabledRequest(ApiRequest):
             data={"outlet_overrides": device.outlet_overrides},
         )
 
+@dataclass
+class DeviceSetPortProfileRequest(ApiRequest):
+    """Request object for setting the port profile."""
+
+    @classmethod
+    def create(
+        cls,
+        device: Device,
+        port_override: TypedDevicePortOverrides,
+    ) -> Self:
+        """Create device set port profile request.
+        
+        Make sure to not overwrite any existing configs.
+        """
+        port_overrides = deepcopy(device.port_overrides) 
+        original = next((p for p in port_overrides if hasattr(p, 'port_idx') and p.get("port_idx") == port_override.get("port_idx")), None)
+        if original:
+            idx = port_overrides.index(original)
+            # Update existing override
+            for key, value in port_override.items():
+                if value is not None:
+                    original[key] = value
+            port_overrides[idx] = original
+        else:
+            # Add new override
+            port_overrides.append(port_override)
+
+        return cls(
+            method="put",
+            path=f"/rest/device/{device.id}",
+            data={"port_overrides": port_overrides},
+        )
 
 @dataclass
 class DeviceSetPoePortModeRequest(ApiRequest):
